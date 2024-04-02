@@ -10,7 +10,6 @@ try:
     from discord.utils import get
     import os
     from dotenv import load_dotenv
-    from testchat import predict, get_response, intents
     from calculation import Calculator
     import base64
     from deepl import DeepLCLI
@@ -69,7 +68,7 @@ try:
                 os.startfile("waiting.py")
                 exit()
             else:
-                await ctx.send(f"Du har ikke adgang til at bruge denne command", delete_after=60)
+                await ctx.send(f"You do not have access to use this command", delete_after=60)
                 print(Fore.CYAN, f"{ctx.author} has tried to use poweroff command but access was denied")
                 print(Fore.WHITE)
         except Exception as c:
@@ -127,7 +126,7 @@ try:
             if Admin in ctx.author.roles or Trainy_Admin in ctx.author.roles:
                 if Owner in ctx.author.roles:
                     await bot.change_presence(activity=discord.Game(name=string))
-                    await ctx.send(f"Status skifted til Spiller {string}", delete_after=60)
+                    await ctx.send(f"Status changed to Player {string}", delete_after=60)
                     print(Fore.CYAN, f"Bot Status has been changed by {ctx.author} to Playing {string}")
                     print(Fore.WHITE)
                 else:
@@ -137,39 +136,22 @@ try:
                         minutes = 1
                         duration = datetime.timedelta(minutes=minutes)
                         await ctx.timeout(duration)
-                        await ctx.send(f"{ctx.mention} er blevet timed out i {minutes} for at prøve at lave om på bot status til noget grimt",
+                       await ctx.send(f"{ctx.mention} has been timed out for {minutes} to try to change the bot status to something ugly",
                                        delete_after=60)
                         print(Fore.CYAN, f"{ctx.author} was timed out for {minutes} minutes by {ctx.author}")
                         print(Fore.WHITE)
                     else:
                         await bot.change_presence(activity=discord.Game(name=string))
-                        await ctx.send(f"Status skifted til Spiller {string}", delete_after=60)
+                        await ctx.send(f"Status changed to playing {string}", delete_after=60)
                         print(Fore.CYAN, f"Bot Status has been changed by {ctx.author} to Playing {string}")
                         print(Fore.WHITE)
             else:
-                await ctx.send(f"Du har ikke adgang til at bruge denne command", delete_after=60)
+                await ctx.send(f"You do not have access to use this command", delete_after=60)
                 print(Fore.CYAN, f"{ctx.author} has tried to change status to {string} but access was denied")
                 print(Fore.WHITE)
 
         except Exception as c:
             print(Fore.RED + f"Something Went Wrong In The Newstat Section: Error Message Was: {c}")
-            print(Fore.WHITE)
-
-    @bot.command(pass_context=True)
-    async def chat(ctx, *, messages: str):
-        try:
-            message = messages.lower()
-            if message == bot.user:
-                return
-            x = deepl.translate(message)
-            ints = predict(x)
-            res = get_response(ints, intents)
-            with open('user_data.txt', 'w') as file:
-                file.write(f"User: {message}" + '\n')
-                file.write(f"Bot: {res}" + '\n')
-            await ctx.channel.send(res, delete_after=60)
-        except Exception as c:
-            print(Fore.RED + f"Something Went Wrong In The Chat Section: Error Message Was: {c}")
             print(Fore.WHITE)
 
     @bot.command()
@@ -185,11 +167,11 @@ try:
                 import datetime
                 duration = datetime.timedelta(minutes=minutes)
                 await member.timeout(duration)
-                await ctx.send(f"{member.mention} er blevet timed out i {minutes} minutter af {ctx.auhor}", delete_after=60)
+                await ctx.send(f"{member.mention} has been timed out in {minutes} minutes by {ctx.auhor}", delete_after=60)
                 print(Fore.CYAN, f"{member} was timed out for {minutes} minutes by {ctx.author}")
                 print(Fore.WHITE)
             else:
-                await ctx.send("Du har ikke adgang til at bruge denne command", delete_after=60)
+                await ctx.send("You do not have access to use this command", delete_after=60)
                 print(Fore.CYAN, f"{ctx.author} tried to use Timeout Command")
                 print(Fore.WHITE)
         except Exception as c:
@@ -209,11 +191,11 @@ try:
                 print(Fore.YELLOW, f"{ctx.author} used kick command")
                 print(Fore.WHITE)
                 if reason == None:
-                    reason = "Ingen grund var fremsat"
+                    reason = "No reason was given"
                 await ctx.guild.kick(member)
                 await ctx.send(f"user {member.mention} has been kicked for {reason}", delete_after=60)
             else:
-                await ctx.send("Du har ikke adgang til at bruge denne command", delete_after=60)
+                await ctx.send("You do not have access to use this command", delete_after=60)
                 print(Fore.YELLOW, f"{ctx.author} tried to use Kick Command")
                 print(Fore.WHITE)
         except Exception as c:
@@ -235,13 +217,13 @@ try:
                 print(Fore.RED, f"{ctx.author} used ban command")
                 print(Fore.WHITE)
                 if reason == None:
-                    reason = "Ingen grund var fremsat"
+                    reason = "No reason was given"
                 await ctx.guild.ban(member)
-                await ctx.send(f"@everyone Bruger {member.author.mention} er blevet banned for {reason}", delete_after=60)
-                print(Fore.RED, f"Bruger {member.author} er blevet banned af {ctx.author} for {reason}")
+                await ctx.send(f"@everyone User {member.author.mention} has been banned for {reason}", delete_after=60)
+                print(Fore.RED, f"User {member.author} has been banned by {ctx.author} for {reason}")
                 print(Fore.WHITE)
             else:
-                await ctx.send("Du har ikke adgang til at bruge denne command", delete_after=60)
+                await ctx.send("You do not have access to use this command", delete_after=60)
                 print(Fore.RED, f"{ctx.author} tried to use Ban Command")
                 print(Fore.WHITE)
         except Exception as c:
@@ -263,13 +245,13 @@ try:
                             out = c.calculate(calcs)
                             await ctx.send(out, delete_after=60)
                         except Exception:
-                            await ctx.send("Noget Gik Galt", delete_after=60)
+                            await ctx.send("Something Went Wrong", delete_after=60)
                     except NameError:
-                        await ctx.send("Noget Gik Galt", delete_after=60)
+                        await ctx.send("Something Went Wrong", delete_after=60)
                 except ValueError:
-                    await ctx.send("Nummeret er for stort", delete_after=60)
+                    await ctx.send("Number is to big", delete_after=60)
             else:
-                await ctx.send(f"Du kan ikke skrive commands i denne kanal", delete_after=60)
+                await ctx.send(f"You cannot write commands in this channel", delete_after=60)
                 print(Fore.CYAN,
                       f"{ctx.author} has tried to use calc command but wasn't using the right channel")
                 print(Fore.WHITE)
@@ -294,11 +276,11 @@ try:
                 print(Fore.WHITE)
                 user = await ctx.client.fetch_user(user_id)
                 await ctx.guild.unban(user)
-                await ctx.send(f"bruger {ctx.mention} er blevet unbanned af {ctx.author.mention}", delete_after=60)
+                await ctx.send(f"user {ctx.mention} has been unbanned by {ctx.author.mention}", delete_after=60)
                 print(Fore.CYAN, f"{ctx.author} has unbanned {ctx.mention}")
                 print(Fore.WHITE)
             else:
-                await ctx.send("Du har ikke adgang til at bruge denne command", delete_after=60)
+                await ctx.send("You do not have access to use this command", delete_after=60)
                 print(Fore.CYAN, f"{ctx.author} tried to use Unban Command")
                 print(Fore.WHITE)
 
@@ -313,20 +295,19 @@ try:
             Bot_Command_Channel = bot.get_channel(1096374409784197202)
             if ctx.channel.id == Bot_Command_Channel:
                 embed = discord.Embed(title="Bot Commands", description="Some Useful Commands   ")
-                embed.add_field(name="!clear", value="Du kan bruge clear til at rydde chats som vist her !clear 1 < antal linjer at rydde. Rank for at bruge --> (Owner, Admin, Trainy Admin, Helper)")
-                embed.add_field(name="!ban", value="Du kan bruge ban til at banne folk som vist her !ban @person. Rank for at bruge --> (Owner, Admin)")
-                embed.add_field(name="!kick", value="Du kan bruge kick til at kicke folk som vist her !kick @person. Rank for at bruge --> (Owner, Admin, Trainy Admin)")
-                embed.add_field(name="!timeout", value="Du kan bruge timeout til at timeout personer som vist her !timeout @person 1 < et minut. Rank for at bruge --> (Owner, Admin, Trainy Admin, Helper)")
-                embed.add_field(name="!unban", value="Du kan bruge unban til at unbanne personer som vist her !unban @person. Rank for at bruge --> (Owner, Admin)")
-                embed.add_field(name="!clearall", value="Du kan bruge clearall til at rydde alt i chatten, som der så der på som vist her !clearall. Rank for at bruge --> (Owner, Admin, Trainy Admin)")
-                embed.add_field(name="!newstat", value="Du kan bruge newstat til at vælge bottens status som vist her !newstat Minecraft (Owner, Admin, Trainy Admin, Helper)")
-                embed.add_field(name="!calc", value="Du kan bruge calc til at regne ting ud som vist her !calc 1+1 = 2")
-                embed.add_field(name="!chat", value="Du kan bruge chat til at tale med en artifical inteligent den er ikke særlig klog men du kan godt tale med den som vist her !chat Hi")
+                embed.add_field(name="!clear", value="You can use clear to clear chats as shown here !clear 1 < number of lines to clear. Rank to use --> (Owner, Admin, Trainy Admin, Helper)")
+                embed.add_field(name="!ban", value="You can use ban to ban people as shown here !ban @person. Rank to use --> (Owner, Admin)")
+                embed.add_field(name="!kick", value="You can use kick to kick people as shown here !kick @person. Rank to use --> (Owner, Admin, Trainy Admin)")
+                embed.add_field(name="!timeout", value="You can use timeout to timeout people as shown here !timeout @person 1 < one minute.Rank to use --> (Owner, Admin, Trainy Admin, Helper)")
+                embed.add_field(name="!unban", value="You can use unban to unban people as shown here !unban @person.Rank to use --> (Owner, Admin)")
+                embed.add_field(name="!clearall", value="You can use clearall to clear everything in the chat as shown here !clearall.Rank to use --> (Owner, Admin, Trainy Admin)")
+                embed.add_field(name="!newstat", value="You can use newstat to select the bot's status as shown here !newstat Minecraft (Owner, Admin, Trainy Admin, Helper)")
+                embed.add_field(name="!calc", value="You can use calc to calculate things like shown here !calc 1+1 = 2")
                 await ctx.send(embed=embed, delete_after=60)
                 print(Fore.CYAN, f"{ctx.author} used help command")
                 print(Fore.WHITE)
             else:
-                await ctx.send(f"Du kan ikke skrive commands i denne kanal", delete_after=60)
+                await ctx.send(f"You cannot write commands in this channel", delete_after=60)
                 print(Fore.CYAN,
                       f"{ctx.author} has tried to use help command but wasn't using the right channel")
                 print(Fore.WHITE)
@@ -352,7 +333,7 @@ try:
                 print(Fore.WHITE)
                 await ctx.channel.purge(limit=amount)
             else:
-                await ctx.send("Du har ikke adgang til at bruge denne command", delete_after=60)
+                await ctx.send("You do not have access to use this command", delete_after=60)
                 print(Fore.YELLOW, f"{ctx.author} tried to use Timeout Command")
                 print(Fore.WHITE)
         except Exception as c:
@@ -375,7 +356,7 @@ try:
                 print(Fore.WHITE)
                 await ctx.channel.purge(limit=100000**100000)
             else:
-                await ctx.send("Du har ikke adgang til at bruge denne command", delete_after=60)
+               await ctx.send("You do not have access to use this command", delete_after=60)
                 print(Fore.YELLOW, f"{ctx.author} tried to use Timeout Command")
                 print(Fore.WHITE)
         except Exception as c:
@@ -415,22 +396,22 @@ try:
                             duration = datetime.timedelta(minutes=minutes)
                             await ctx.channel.purge(limit=counter)
                             await ctx.timeout(duration)
-                            await ctx.channel.send(f"{ctx.author.mention} er blevet timed out i {minutes} minutter for at spamme", delete_after=30)
-                            print(Fore.CYAN, f"{ctx.author} was timed out for {minutes} minutes for spamming")
+                            await ctx.channel.send(f"{ctx.author.mention} has been timed out for {minutes} minutes for spamming", delete_after=30)
+                            print(Fore.CYAN, f"{ctx.author} blev timet ud i {minutter} minutter for spamming")
                             print(Fore.WHITE)
 
                 if profanity.contains_profanity(ctx.content):
                     if ctx.channel.id == unspervised_chat:
                         pass
                     else:
-                        await ctx.channel.send(f"{ctx.author.mention} Opfør dig Ordenligt. Din konsikvens er at du bliver Timeouted i 1 minute", delete_after=10)
+                        await ctx.channel.send(f"{ctx.author.mention} Behave Orderly. Your consequence is that you will be Timeouted for 1 minute", delete_after=10)
                         await ctx.delete()
                         import datetime
                         minutes = 1
                         duration = datetime.timedelta(minutes=minutes)
                         await ctx.author.timeout(duration)
-                        await ctx.channel.send(f"{ctx.author.mention} blev timedout i {minutes} minutter", delete_after=60)
-                        print(Fore.CYAN, f"{ctx.author} blev timedout i {minutes} minutter")
+                        await ctx.channel.send(f"{ctx.author.mention} was timed out in {minutes} minutes", delete_after=60)
+                        print(Fore.CYAN, f"{ctx.author} was timed out in {minutes} minutes")
                         print(Fore.WHITE)
                 else:
                     url_check = Find(ctx.content)
@@ -441,7 +422,7 @@ try:
                             await ctx.delete()
                             print(Fore.CYAN, f"{ctx.author} tried to send a Link")
                             print(Fore.WHITE)
-                            await ctx.channel.send(f"{ctx.author.mention} Hver Sød At Skrive Links I Url Chatten", delete_after=30)
+                            await ctx.channel.send(f"{ctx.author.mention} Every Nice To Post Links In Url Chat", delete_after=30)
                     else:
                         pass
 
@@ -452,14 +433,14 @@ try:
                         if Owner in ctx.author.roles:
                             pass
                         else:
-                            await ctx.channel.send(f"{ctx.author.mention} Opfør dig Ordenligt. Din konsikvens er at du bliver Timeouted i 1 minute", delete_after=10)
+                            await ctx.channel.send(f"{ctx.author.mention} Behave Orderly. Your consequence is that you will be Timeouted for 1 minute", delete_after=10)
                             await ctx.delete()
                             import datetime
                             minutes = 1
                             duration = datetime.timedelta(minutes=minutes)
                             await ctx.author.timeout(duration)
-                            await ctx.channel.send(f"{ctx.author.mention} blev timedout i {minutes} minutter", delete_after=60)
-                            print(Fore.CYAN, f"{ctx.author} blev timedout i {minutes} minutter")
+                           await ctx.channel.send(f"{ctx.author.mention} was timed out in {minutes} minutes", delete_after=60)
+                            print(Fore.CYAN, f"{ctx.author} was timed out in {minutes} minutes")
                             print(Fore.WHITE)
                 else:
                     if Owner in ctx.author.roles:
@@ -471,15 +452,14 @@ try:
                         else:
                             if profanity.contains_profanity(translated):
                                 await ctx.channel.send(
-                                    f"{ctx.author.mention} Opfør dig Ordenligt. Din konsikvens er at du bliver Timeouted i 1 minute",
+                                    f"{ctx.author.mention} Behave Orderly. Your consequence is that you will be Timeouted for 1 minute",
                                     delete_after=10)
                                 await ctx.delete()
                                 import datetime
                                 minutes = 1
                                 duration = datetime.timedelta(minutes=minutes)
                                 await ctx.author.timeout(duration)
-                                await ctx.channel.send(f"{ctx.author.mention} blev timedout i {minutes} minutes", delete_after=60)
-
+                                await ctx.channel.send(f"{ctx.author.mention} became timedout in {minutes} minutes", delete_after=60)
 
 
                 await bot.process_commands(ctx)
@@ -492,7 +472,7 @@ try:
         try:
             guild = bot.get_guild(1077856444700950588) # Everyone Role ID
             channel = guild.get_channel(1077926167438426122) # Welcome Channel ID
-            await channel.send(f"Velkommen til serveren {member.mention} ! :partying_face:")
+            await channel.send(f"Welcome to the server {member.mention} ! :partying_face:")
             role = get(member.guild.roles, name='Member')
             await member.add_roles(role)
         except Exception as c:
@@ -539,16 +519,16 @@ try:
                         pass
                     else:
                         await before.channel.send(
-                            f"{before.author.mention} Opfør dig Ordenligt. Din konsikvens er at du bliver Timeouted i 1 minute",
+                            f"{before.author.mention} Behave Orderly. Your consequence is that you will be timeouted for 1 minute",
                             delete_after=10)
                         await before.delete()
                         import datetime
                         minutes = 1
                         duration = datetime.timedelta(minutes=minutes)
                         await before.author.timeout(duration)
-                        await before.channel.send(f"{before.author.mention} blev timedout i {minutes} minutter",
+                        await before.channel.send(f"{before.author.mention} was timedout in {minutes} minutes",
                                                delete_after=60)
-                        print(Fore.CYAN, f"{before.author} blev timedout i {minutes} minutter")
+                        print(Fore.CYAN, f"{before.author} was timed out in {minutes} minutes")
                         print(Fore.WHITE)
             else:
                 if Owner in before.author.roles:
